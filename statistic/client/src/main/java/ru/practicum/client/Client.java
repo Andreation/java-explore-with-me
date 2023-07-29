@@ -6,6 +6,7 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestTemplate;
 
 public class Client {
@@ -18,14 +19,24 @@ public class Client {
     protected  <T> ResponseEntity<Object> post(String path, T body) {
         HttpEntity<Object> requestEntity = new HttpEntity<>(body);
         ResponseEntity<Object> statServerResponse;
-        statServerResponse = rest.exchange(path, HttpMethod.POST, requestEntity, Object.class);
+        try {
+            statServerResponse = rest
+                    .exchange(path, HttpMethod.POST, requestEntity, Object.class);
+        } catch (HttpStatusCodeException e) {
+            return ResponseEntity.status(e.getStatusCode()).body(e.getResponseBodyAsByteArray());
+        }
         return prepareResponse(statServerResponse);
     }
 
     protected ResponseEntity<Object> get(String path, Map<String, Object> parameters) {
         HttpEntity<Object> requestEntity = new HttpEntity<>(new HttpHeaders());
         ResponseEntity<Object> statServerResponse;
-        statServerResponse = rest.exchange(path, HttpMethod.GET, requestEntity, Object.class, parameters);
+        try {
+            statServerResponse = rest
+                    .exchange(path, HttpMethod.GET, requestEntity, Object.class, parameters);
+        } catch (HttpStatusCodeException e) {
+            return ResponseEntity.status(e.getStatusCode()).body(e.getResponseBodyAsByteArray());
+        }
         return prepareResponse(statServerResponse);
     }
 
