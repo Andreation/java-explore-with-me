@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 public class HitClient extends Client {
 
     @Autowired
-    public HitClient(@Value("${stats-server.url}") String url, RestTemplateBuilder builder) {
+    public HitClient(@Value("${service.url}") String url, RestTemplateBuilder builder) {
         super(builder
                 .uriTemplateHandler(new DefaultUriBuilderFactory(url + "/hit"))
                 .requestFactory(HttpComponentsClientHttpRequestFactory::new)
