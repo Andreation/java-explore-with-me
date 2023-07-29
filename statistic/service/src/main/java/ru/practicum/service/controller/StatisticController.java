@@ -1,13 +1,13 @@
-package ru.practicum.statisticservice.controller;
+package ru.practicum.service.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.practicum.statisticdto.HitDto;
-import ru.practicum.statisticdto.StatDto;
-import ru.practicum.statisticservice.service.StatisticService;
+import ru.practicum.service.service.StatisticService;
+import ru.practicum.dto.HitDto;
+import ru.practicum.dto.StatDto;
 
 import javax.validation.Valid;
 import java.time.LocalDateTime;

@@ -1,4 +1,4 @@
-package ru.practicum.statisticclient;
+package ru.practicum.client;
 
 import java.util.Map;
 

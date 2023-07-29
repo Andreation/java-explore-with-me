@@ -1,6 +1,6 @@
-package ru.practicum.statisticservice.model;
+package ru.practicum.service.model;
 
-import ru.practicum.statisticdto.HitDto;
+import ru.practicum.dto.HitDto;
 
 public final class HitMapper {
 
