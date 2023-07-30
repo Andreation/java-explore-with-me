@@ -9,7 +9,7 @@ public final class HitMapper {
                 .app(hitDto.getApp())
                 .ip(hitDto.getIp())
                 .uri(hitDto.getUri())
-                .created(hitDto.getTimestamp())
+                .created(hitDto.getCreated())
                 .build();
     }
 }

@@ -1,5 +1,6 @@
 package ru.practicum.service.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 
 import javax.persistence.*;
@@ -20,5 +21,6 @@ public class Hit {
     private String app;
     private String uri;
     private String ip;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime created;
 }

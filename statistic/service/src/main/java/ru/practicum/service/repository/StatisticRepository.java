@@ -11,7 +11,7 @@ import java.util.List;
 
 public interface StatisticRepository extends JpaRepository<Hit, Long> {
 
-    @Query("SELECT new ru.practicum.dto.StatDto(a.app, a.uri,  count(a.id)) " +
+    @Query("SELECT new ru.practicum.dto.StatDto(a.app, a.uri,  count(a)) " +
             "FROM Hit a WHERE a.uri IN :uris  " +
             "AND  a.created > :start AND a.created < :end " +
             "GROUP BY a.app, a.uri " +
@@ -26,7 +26,7 @@ public interface StatisticRepository extends JpaRepository<Hit, Long> {
     List<StatDto> findViewStatisticsWithUrisAndIpIsUnique(@Param("start") LocalDateTime start, @Param("end") LocalDateTime end, List<String> uris);
 
 
-    @Query("SELECT new ru.practicum.dto.StatDto(a.app, a.uri,  count(a.id)) " +
+    @Query("SELECT new ru.practicum.dto.StatDto(a.app, a.uri,  count(a)) " +
             "FROM Hit a " +
             "WHERE a.created > :start AND a.created < :end " +
             "GROUP BY a.app, a.uri " +
@@ -37,6 +37,6 @@ public interface StatisticRepository extends JpaRepository<Hit, Long> {
             "FROM Hit a " +
             "WHERE a.created BETWEEN :start AND :end " +
             "GROUP BY a.app, a.uri " +
-            "ORDER BY count(ip) DESC ")
+            "ORDER BY count(a.ip) DESC ")
     List<StatDto> findViewStatisticsWithoutUrisAndIsIpUnique(@Param("start") LocalDateTime start, @Param("end") LocalDateTime end);
 }
