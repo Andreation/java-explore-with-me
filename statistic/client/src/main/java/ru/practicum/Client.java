@@ -1,6 +1,4 @@
-package ru.practicum.client;
-
-import java.util.Map;
+package ru.practicum;
 
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -8,6 +6,8 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestTemplate;
+
+import java.util.Map;
 
 public class Client {
     private final RestTemplate rest;

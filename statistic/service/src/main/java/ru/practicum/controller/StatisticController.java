@@ -1,4 +1,4 @@
-package ru.practicum.service.controller;
+package ru.practicum.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -6,9 +6,9 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.practicum.service.service.StatisticService;
-import ru.practicum.dto.HitDto;
-import ru.practicum.dto.StatDto;
+import ru.practicum.service.StatisticService;
+import ru.practicum.HitDto;
+import ru.practicum.StatDto;
 
 import javax.validation.Valid;
 import java.time.LocalDateTime;
