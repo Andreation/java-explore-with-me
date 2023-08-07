@@ -179,9 +179,9 @@ public class EventService {
         List<Event> events;
         if (rangeStart == null && rangeEnd == null) {
             rangeStart = LocalDateTime.now();
-            rangeEnd = rangeStart.plusYears(8);
+            rangeEnd = rangeStart.plusYears(10);
         }
-        if (rangeEnd.isBefore(rangeStart) || size > 100) {
+        if (rangeEnd.isBefore(rangeStart)) {
             throw new BadRequestException("rangeEnd is before rangeStart");
         }
         if (users != null && states != null && categories != null) {
