@@ -5,8 +5,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import ru.practicum.main.user.model.InputUserDto;
-import ru.practicum.main.user.model.UserDto;
+import ru.practicum.main.user.dto.InputUserDto;
+import ru.practicum.main.user.dto.UserDto;
 import ru.practicum.main.user.service.UserService;
 
 import javax.validation.Valid;

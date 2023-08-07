@@ -4,8 +4,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import ru.practicum.main.exception.NotFoundException;
-import ru.practicum.main.user.model.InputUserDto;
-import ru.practicum.main.user.model.UserDto;
+import ru.practicum.main.user.dto.InputUserDto;
+import ru.practicum.main.user.dto.UserDto;
 import ru.practicum.main.user.model.UserMapper;
 import ru.practicum.main.user.repository.UserRepository;
 

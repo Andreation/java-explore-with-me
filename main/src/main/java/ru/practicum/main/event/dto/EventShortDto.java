@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.experimental.FieldDefaults;
 import lombok.*;
 import ru.practicum.main.category.dto.CategoryDto;
-import ru.practicum.main.user.model.UserDtoWithoutEmail;
+import ru.practicum.main.user.dto.UserDtoWithoutEmail;
 
 import java.time.LocalDateTime;
 

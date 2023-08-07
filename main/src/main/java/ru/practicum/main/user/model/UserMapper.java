@@ -2,6 +2,9 @@ package ru.practicum.main.user.model;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
+import ru.practicum.main.user.dto.InputUserDto;
+import ru.practicum.main.user.dto.UserDto;
+import ru.practicum.main.user.dto.UserDtoWithoutEmail;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class UserMapper {

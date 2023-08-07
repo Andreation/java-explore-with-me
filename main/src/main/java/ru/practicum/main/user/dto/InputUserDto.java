@@ -1,4 +1,4 @@
-package ru.practicum.main.user.model;
+package ru.practicum.main.user.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -11,12 +11,12 @@ import javax.validation.constraints.Size;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserDto {
-    private Integer id;
+public class InputUserDto {
     @NotBlank
-    @Size(max = 100)
+    @Size(min = 3, max = 250)
     private String name;
     @Email
-    @Size(max = 100)
+    @NotBlank
+    @Size(min = 6, max = 254)
     private String email;
 }

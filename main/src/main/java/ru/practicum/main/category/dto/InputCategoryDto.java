@@ -12,6 +12,6 @@ import javax.validation.constraints.Size;
 @AllArgsConstructor
 public class InputCategoryDto {
     @NotBlank
-    @Size(min = 1, max = 64)
+    @Size(min = 3, max = 50)
     private String name;
 }
