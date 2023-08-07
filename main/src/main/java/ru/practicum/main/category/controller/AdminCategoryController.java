@@ -19,7 +19,7 @@ public class AdminCategoryController {
 
     private final AdminCategoryService adminCategoryService;
 
-    @PostMapping()
+    @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public CategoryDto postCategory(@RequestBody @Valid InputCategoryDto inputCategoryDto) {
         log.debug("POST request to admin/categories with parameters: inputCategoryDto = " + inputCategoryDto);

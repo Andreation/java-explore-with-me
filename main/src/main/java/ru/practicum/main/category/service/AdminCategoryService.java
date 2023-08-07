@@ -16,7 +16,7 @@ public class AdminCategoryService {
     private final CategoryRepository categoryRepository;
 
     public CategoryDto postCategory(InputCategoryDto inputCategoryDto) {
-        return CategoryMapper.categoryToDto(categoryRepository.save(CategoryMapper.categoryFromSaveDto(inputCategoryDto)));
+        return CategoryMapper.categoryToDto(categoryRepository.save(CategoryMapper.categoryFromInputDto(inputCategoryDto)));
     }
 
     public CategoryDto patchCategory(InputCategoryDto inputCategoryDto, Integer id) {

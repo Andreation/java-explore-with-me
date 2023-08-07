@@ -9,10 +9,10 @@ import ru.practicum.main.category.dto.InputCategoryDto;
 public final class CategoryMapper {
 
     public static CategoryDto categoryToDto(Category category) {
-        return new CategoryDto(category.getId(), category.getName());
+        return CategoryDto.builder().name(category.getName()).id(category.getId()).build();
     }
 
-    public static Category categoryFromSaveDto(InputCategoryDto newCategoryDto) {
-        return new Category(null, newCategoryDto.getName());
+    public static Category categoryFromInputDto(InputCategoryDto newCategoryDto) {
+        return Category.builder().name(newCategoryDto.getName()).build();
     }
 }

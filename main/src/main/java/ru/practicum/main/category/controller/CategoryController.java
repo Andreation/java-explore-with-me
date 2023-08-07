@@ -32,9 +32,9 @@ public class CategoryController {
 
     @GetMapping("/{catId}")
     @ResponseStatus(HttpStatus.OK)
-    public CategoryDto getCategory(@PathVariable Integer id) {
-        log.debug("GET request to /categories/{id} with parameters: id = " + id);
-        return categoryService.getCategory(id);
+    public CategoryDto getCategory(@PathVariable Integer catId) {
+        log.debug("GET request to /categories/{id} with parameters: id = " + catId);
+        return categoryService.getCategory(catId);
     }
 
 }
