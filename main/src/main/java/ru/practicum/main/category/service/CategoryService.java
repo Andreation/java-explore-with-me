@@ -28,7 +28,7 @@ public class CategoryService {
 
     public CategoryDto getCategory(Integer id) {
         Category category = categoryRepository.findById(id).orElseThrow(
-                () -> new NotFoundException(String.format("category with id = %d, not found", id)));
+                () -> new NotFoundException(String.format("not found category with id = " + id)));
         return null;
     }
 
