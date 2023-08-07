@@ -1,6 +1,7 @@
 package ru.practicum.main.exception;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -17,6 +18,12 @@ public class ErrorHandler {
         return new ErrorResponse(e.getMessage());
     }
 
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public ErrorResponse handleDataAccessException(final DataAccessException e) {
+        log.error("DataAccessException : {}", e.getMessage());
+        return new ErrorResponse(e.getMessage());
+    }
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.NOT_FOUND)
