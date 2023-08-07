@@ -181,7 +181,7 @@ public class EventService {
             rangeStart = LocalDateTime.now();
             rangeEnd = rangeStart.plusYears(8);
         }
-        if (rangeEnd.isBefore(rangeStart)) {
+        if (rangeEnd.isBefore(rangeStart) || size > 100) {
             throw new BadRequestException("rangeEnd is before rangeStart");
         }
         if (users != null && states != null && categories != null) {
