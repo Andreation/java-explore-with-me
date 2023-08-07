@@ -16,6 +16,7 @@ public interface EventRepository extends JpaRepository<Event, Integer> {
 
     List<Event> findAllByIdIn(List<Integer> eventIds);
 
+
     Page<Event> findAllByInitiator_IdInAndStateInAndCategory_IdInAndEventDateBeforeAndEventDateAfter(
             List<Integer> userId, List<State> states, List<Integer> categoryId, LocalDateTime start,
             LocalDateTime end, Pageable pageable);
@@ -34,4 +35,6 @@ public interface EventRepository extends JpaRepository<Event, Integer> {
     Optional<Event> findByIdAndInitiator_Id(Integer eventId, Integer userId);
 
     Optional<Event> findByIdAndStateIn(Integer eventId, List<State> states);
+
+    Event findFirstByCategoryId(Integer eventId);
 }
