@@ -18,7 +18,7 @@ public class UpdateEventAdminRequest {
     @Size(min = 20, max = 2000)
     String annotation;
     Integer category;
-    @Size(min = 20, max = 2000)
+    @Size(min = 20, max = 7000)
     String description;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @Future
@@ -28,6 +28,6 @@ public class UpdateEventAdminRequest {
     Integer participantLimit;
     Boolean requestModeration;
     StateActionAdmin stateAction;
-    @Size(min = 5, max = 120)
+    @Size(min = 3, max = 120)
     String title;
 }
