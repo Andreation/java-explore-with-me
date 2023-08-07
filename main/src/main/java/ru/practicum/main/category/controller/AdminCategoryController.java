@@ -26,19 +26,19 @@ public class AdminCategoryController {
         return adminCategoryService.postCategory(inputCategoryDto);
     }
 
-    @PatchMapping("/{id}")
+    @PatchMapping("/{catId}")
     @ResponseStatus(HttpStatus.OK)
     public CategoryDto patchCategory(@RequestBody @Valid InputCategoryDto inputCategoryDto,
-                                     @PathVariable Integer id) {
-        log.debug("PATCH request to admin/categories with parameters: id = " + id
+                                     @PathVariable Integer catId) {
+        log.debug("PATCH request to admin/categories with parameters: catId = " + catId
                 + "inputCategoryDto = " + inputCategoryDto);
-        return adminCategoryService.patchCategory(inputCategoryDto, id);
+        return adminCategoryService.patchCategory(inputCategoryDto, catId);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/{catId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteCategory(@PathVariable Integer id) {
-        log.debug("DELETE request to admin/categories with parameters: id = " + id);
-        adminCategoryService.deleteCategory(id);
+    public void deleteCategory(@PathVariable Integer catId) {
+        log.debug("DELETE request to admin/categories with parameters: id = " + catId);
+        adminCategoryService.deleteCategory(catId);
     }
 }

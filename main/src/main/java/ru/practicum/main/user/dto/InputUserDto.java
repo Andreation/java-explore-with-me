@@ -13,7 +13,7 @@ import javax.validation.constraints.Size;
 @NoArgsConstructor
 public class InputUserDto {
     @NotBlank
-    @Size(min = 3, max = 250)
+    @Size(min = 2, max = 250)
     private String name;
     @Email
     @NotBlank
