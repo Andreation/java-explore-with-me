@@ -10,6 +10,7 @@ import ru.practicum.main.event.dto.EventShortDto;
 import ru.practicum.main.event.service.EventService;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.constraints.Max;
 import javax.validation.constraints.Positive;
 import javax.validation.constraints.PositiveOrZero;
 import java.time.LocalDateTime;
@@ -33,7 +34,7 @@ public class EventController {
             @RequestParam(required = false, defaultValue = "false") Boolean onlyAvailable,
             @RequestParam(required = false) String sort,
             @RequestParam(required = false, defaultValue = "0") @PositiveOrZero Integer from,
-            @RequestParam(required = false, defaultValue = "10") @Positive Integer size,
+            @RequestParam(required = false, defaultValue = "10") @Positive @Max(100) Integer size,
             HttpServletRequest request
     ) {
         return eventService.getEvents(text, categories, paid, start, end, onlyAvailable, sort, from, size,
