@@ -21,7 +21,7 @@ public class AdminCategoryService {
 
     public CategoryDto patchCategory(InputCategoryDto inputCategoryDto, Integer id) {
         Category category = categoryRepository.findById(id).orElseThrow(
-                () -> new NotFoundException(String.format("not found category with id = " + id)));
+                () -> new NotFoundException(String.format(" not found category with id = " + id)));
         category.setName(inputCategoryDto.getName());
         return CategoryMapper.categoryToDto(categoryRepository.save(category));
     }
