@@ -2,48 +2,37 @@ version: '3.1'
 services:
   stats-server:
     build: statistic/service
-    image: explore-statistic-image
-    container_name: explore-statistic
+    container_name: stats-server
     ports:
       - "9090:9090"
     depends_on:
       - stats-db
-    environment:
-      - EXPLORE_MAIN_URL=http://main:8080
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://stats-db:5432/statistic-explore
 
   stats-db:
     image: postgres:14-alpine
-    volumes:
-      - /var/lib/postgresql/data/
-    container_name: statistic-db
+    container_name: stats-db
     ports:
-      - "9092:5432"
+      - "5432:5432"
     environment:
-      - POSTGRES_DB=statistic-explore
-      - POSTGRES_USER=root
-      - POSTGRES_PASSWORD=root
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: root
+      POSTGRES_DB: stats-db
 
   ewm-service:
     build: main
-    image: explore-main-image
-    container_name: explore-main
+    container_name: ewm-service
     ports:
       - "8080:8080"
     depends_on:
       - ewm-db
-    environment:
-      - STATISTIC_SERVICE_URL=http://stats-server:9090
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://ewm-db:5432/main-explore
 
   ewm-db:
     image: postgres:14-alpine
-    volumes:
-      - /var/lib/postgresql/data/
-    container_name: main-db
+    container_name: ewm-db
     ports:
-      - "9091:5432"
+      - "5433:5433"
     environment:
-      - POSTGRES_DB=main-explore
-      - POSTGRES_USER=root
-      - POSTGRES_PASSWORD=root
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: root
+      POSTGRES_DB: ewm-db
+    command: -p 5433
