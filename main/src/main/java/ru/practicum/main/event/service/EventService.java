@@ -179,7 +179,7 @@ public class EventService {
         List<Event> events;
         if (rangeStart == null && rangeEnd == null) {
             rangeStart = LocalDateTime.now();
-            rangeEnd = rangeStart.plusYears(1);
+            rangeEnd = rangeStart.plusYears(8);
         }
         if (rangeEnd.isBefore(rangeStart)) {
             throw new BadRequestException("rangeEnd is before rangeStart");
@@ -191,7 +191,7 @@ public class EventService {
                     .getContent();
         } else {
             events = eventRepository.findAllByEventDateBeforeAndEventDateAfter(rangeEnd, rangeStart,
-                    PageRequest.of(from / size, size)).getContent();
+                    PageRequest.of(from, size)).getContent();
         }
         return eventMapper.toEventFullDtos(events);
     }
