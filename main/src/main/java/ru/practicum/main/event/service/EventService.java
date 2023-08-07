@@ -177,7 +177,7 @@ public class EventService {
             Integer size
     ) {
         List<Event> events;
-        if (rangeStart == null || rangeEnd == null) {
+        if (rangeStart == null && rangeEnd == null) {
             rangeStart = LocalDateTime.now();
             rangeEnd = rangeStart.plusYears(1);
         }
