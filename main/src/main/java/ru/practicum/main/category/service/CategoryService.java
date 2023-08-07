@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import ru.practicum.main.category.dto.CategoryDto;
-import ru.practicum.main.category.model.Category;
 import ru.practicum.main.category.model.CategoryMapper;
 import ru.practicum.main.category.repository.CategoryRepository;
 import ru.practicum.main.exception.NotFoundException;
@@ -27,9 +26,8 @@ public class CategoryService {
     }
 
     public CategoryDto getCategory(Integer id) {
-        Category category = categoryRepository.findById(id).orElseThrow(
-                () -> new NotFoundException(String.format("not found category with id = " + id)));
-        return null;
+        return CategoryMapper.categoryToDto(categoryRepository.findById(id).orElseThrow(
+                () -> new NotFoundException(String.format("not found category with id = " + id))));
     }
 
 }
