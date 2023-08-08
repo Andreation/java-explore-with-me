@@ -271,4 +271,8 @@ public class EventService {
         Event event = eventRepository.findFirstByCategoryId(catId);
         return event != null ? eventMapper.toEventFullDto(eventRepository.findFirstByCategoryId(catId)) : null;
     }
+
+    public List<Event> findAllByIdIn(List<Integer> events) {
+        return eventRepository.findAllByIdIn(events);
+    }
 }

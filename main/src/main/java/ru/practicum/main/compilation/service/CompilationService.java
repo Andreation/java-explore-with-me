@@ -11,7 +11,7 @@ import ru.practicum.main.compilation.dto.UpdateCompilationRequest;
 import ru.practicum.main.compilation.model.Compilation;
 import ru.practicum.main.compilation.model.CompilationMapper;
 import ru.practicum.main.compilation.repository.CompilationRepository;
-import ru.practicum.main.event.repository.EventRepository;
+import ru.practicum.main.event.service.EventService;
 import ru.practicum.main.exception.NotFoundException;
 
 import java.util.List;
@@ -23,7 +23,7 @@ public class CompilationService {
 
     CompilationRepository compilationRepository;
     CompilationMapper compilationMapper;
-    EventRepository eventRepository;
+    EventService eventService;
 
     public List<CompilationDto> getCompilations(Boolean pinned, Integer from, Integer size) {
         List<Compilation> compilations;
@@ -45,7 +45,7 @@ public class CompilationService {
     public CompilationDto createCompilation(CreateCompilationDto createCompilationDto) {
         Compilation compilation = compilationMapper.toCompilation(createCompilationDto);
         if (createCompilationDto.getEvents() != null)
-            compilation.setEvents(eventRepository.findAllByIdIn(createCompilationDto.getEvents()));
+            compilation.setEvents(eventService.findAllByIdIn(createCompilationDto.getEvents()));
         return compilationMapper.toCompilationDto(compilationRepository.save(compilation));
     }
 
@@ -59,8 +59,7 @@ public class CompilationService {
                 () -> new NotFoundException("not found competition with id =" + compId));
         compilationMapper.updateCompilation(compilation, updateCompilationRequest);
         if (updateCompilationRequest.getEvents() != null)
-            compilation.setEvents(eventRepository.findAllByIdIn(updateCompilationRequest.getEvents()));
-
+            compilation.setEvents(eventService.findAllByIdIn(updateCompilationRequest.getEvents()));
         compilationRepository.save(compilation);
         return compilationMapper.toCompilationDto(compilation);
     }
