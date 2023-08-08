@@ -266,4 +266,8 @@ public class EventService {
         statsClient.addHit(endpointHitDto);
         return eventMapper.toEventFullDto(event);
     }
+
+    public  EventDto findFirstByCategoryId(Integer catId) {
+        return eventMapper.toEventFullDto(eventRepository.findFirstByCategoryId(catId));
+    }
 }

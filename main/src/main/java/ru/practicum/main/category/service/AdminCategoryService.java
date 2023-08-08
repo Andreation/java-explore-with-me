@@ -7,16 +7,16 @@ import ru.practicum.main.category.dto.InputCategoryDto;
 import ru.practicum.main.category.model.Category;
 import ru.practicum.main.category.model.CategoryMapper;
 import ru.practicum.main.category.repository.CategoryRepository;
+import ru.practicum.main.event.service.EventService;
 import ru.practicum.main.exception.ConflictException;
 import ru.practicum.main.exception.NotFoundException;
-import ru.practicum.main.event.repository.EventRepository;
 
 
 @RequiredArgsConstructor
 @Service
 public class AdminCategoryService {
     private final CategoryRepository categoryRepository;
-    private final EventRepository eventRepository;
+    private final EventService eventService;
 
     public CategoryDto postCategory(InputCategoryDto inputCategoryDto) {
         return CategoryMapper.categoryToDto(categoryRepository.save(CategoryMapper.categoryFromInputDto(inputCategoryDto)));
@@ -36,7 +36,7 @@ public class AdminCategoryService {
     }
 
     private void checkEvent(Integer catId) {
-        if (eventRepository.findFirstByCategoryId(catId) != null) {
+        if (eventService.findFirstByCategoryId(catId) != null) {
             throw new ConflictException("category include event");
         }
     }
