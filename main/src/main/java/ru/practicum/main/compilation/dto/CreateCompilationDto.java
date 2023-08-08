@@ -12,7 +12,7 @@ import java.util.List;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @AllArgsConstructor
 @NoArgsConstructor
-public class NewCompilationDto {
+public class CreateCompilationDto {
     List<Integer> events = List.of();
     Boolean pinned = false;
     @NotBlank
