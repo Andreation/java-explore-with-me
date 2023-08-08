@@ -268,6 +268,7 @@ public class EventService {
     }
 
     public  EventDto findFirstByCategoryId(Integer catId) {
-        return eventMapper.toEventFullDto(eventRepository.findFirstByCategoryId(catId));
+        Event event = eventRepository.findFirstByCategoryId(catId);
+        return event != null ? eventMapper.toEventFullDto(eventRepository.findFirstByCategoryId(catId)) : null;
     }
 }
