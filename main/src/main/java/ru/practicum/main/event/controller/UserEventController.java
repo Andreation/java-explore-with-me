@@ -49,7 +49,7 @@ public class UserEventController {
     }
 
     @PatchMapping("{eventId}")
-    public EventDto changeEvent(
+    public EventDto patchEvent(
             @PathVariable Integer userId,
             @PathVariable Integer eventId,
             @Valid @RequestBody UpdateEventUserRequest updateEventUserRequest) {
@@ -57,7 +57,7 @@ public class UserEventController {
     }
 
     @PatchMapping("{eventId}/requests")
-    public EventRequestStatusUpdateResult changeEventRequests(
+    public EventRequestStatusUpdateResult patchEventRequests(
             @PathVariable Integer userId,
             @PathVariable Integer eventId,
             @RequestBody EventRequestStatusUpdateRequest eventRequestStatusUpdateRequest) {

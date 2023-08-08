@@ -126,16 +126,16 @@ public class EventService {
             Integer userId,
             Integer eventId,
             EventRequestStatusUpdateRequest eventRequestStatusUpdateRequest) {
-        Event event = eventRepository.findByIdAndInitiator_Id(eventId, userId).orElseThrow(NotFoundException::new);
-        if (event.getConfirmedRequests() != null && event.getParticipantLimit() == 0 || !event.getRequestModeration()) {
-            throw new BadRequestException("");
-        }
-        if (requestRepository.existsParticipationRequestByIdInAndStatus(eventRequestStatusUpdateRequest.getRequestIds(), CONFIRMED)) {
-            throw new ConflictException("status PENDING");
-        }
-        if (event.getConfirmedRequests() != null && event.getConfirmedRequests().equals(event.getParticipantLimit())) {
-            throw new ConflictException("");
-        }
+        Event event = eventRepository.findByIdAndInitiator_Id(eventId, userId).orElseThrow(() -> new NotFoundException("event not found"));
+        if (event.getConfirmedRequests() != null && event.getParticipantLimit() == 0 || !event.getRequestModeration())
+            throw new BadRequestException("eventRequest cannot be patched");
+
+        if (requestRepository.existsParticipationRequestByIdInAndStatus(eventRequestStatusUpdateRequest.getRequestIds(), CONFIRMED))
+            throw new ConflictException("event status is PENDING!");
+
+        if (event.getConfirmedRequests() != null && event.getConfirmedRequests().equals(event.getParticipantLimit()))
+            throw new ConflictException("eventRequest cannot be patched");
+
         List<RequestEvent> requests = requestRepository.findAllById(eventRequestStatusUpdateRequest.getRequestIds());
         EventRequestStatusUpdateResult eventRequestStatusUpdateResult = new EventRequestStatusUpdateResult();
         if (eventRequestStatusUpdateRequest.getStatus() == REJECTED) {
@@ -177,17 +177,16 @@ public class EventService {
             Integer size
     ) {
         List<Event> events;
-        if (rangeStart == null && rangeEnd == null) {
-            rangeStart = LocalDateTime.now();
-            rangeEnd = rangeStart.plusYears(10);
-        }
-        if (rangeEnd.isBefore(rangeStart)) {
-            throw new BadRequestException("rangeEnd is before rangeStart");
-        }
+        rangeStart = rangeStart != null ? rangeStart : LocalDateTime.now();
+        rangeEnd = rangeEnd != null ? rangeEnd : rangeStart.plusYears(1);
+
+        if (rangeEnd.isBefore(rangeStart))
+            throw new BadRequestException("end is before start!");
+
         if (users != null && states != null && categories != null) {
             events = eventRepository
                     .findAllByInitiator_IdInAndStateInAndCategory_IdInAndEventDateBeforeAndEventDateAfter(
-                            users, states, categories, rangeEnd, rangeStart, PageRequest.of(from / size, size))
+                            users, states, categories, rangeEnd, rangeStart, PageRequest.of(from, size))
                     .getContent();
         } else {
             events = eventRepository.findAllByEventDateBeforeAndEventDateAfter(rangeEnd, rangeStart,
@@ -196,13 +195,12 @@ public class EventService {
         return eventMapper.toEventFullDtos(events);
     }
 
-    public EventDto changeEvent(Integer eventId, UpdateEventAdminRequest updateEventAdminRequest) {
+    public EventDto patchEvent(Integer eventId, UpdateEventAdminRequest updateEventAdminRequest) {
         if (updateEventAdminRequest != null) {
-            if (updateEventAdminRequest.getEventDate() != null) {
-                if (LocalDateTime.now().plusHours(1).isAfter(updateEventAdminRequest.getEventDate())) {
-                    throw new ForbiddenException("date erroor");
-                }
-            }
+            if (updateEventAdminRequest.getEventDate() != null
+                    && LocalDateTime.now().plusHours(1).isAfter(updateEventAdminRequest.getEventDate()))
+                    throw new ForbiddenException("date error");
+
             Event event = eventRepository.findById(eventId).orElseThrow(NotFoundException::new);
             if (updateEventAdminRequest.getStateAction() == PUBLISH_EVENT
                     && (event.getState() == PUBLISHED || event.getState() == State.CANCELED)) {
@@ -222,8 +220,8 @@ public class EventService {
             Event savedEvent = eventRepository.save(event);
             return eventMapper.toEventFullDto(savedEvent);
         }
-        Event event = eventRepository.findById(eventId).orElseThrow(NotFoundException::new);
-        if (event.getState() == PUBLISHED) throw new ConflictException("Cannot publish published or canceled event");
+        Event event = eventRepository.findById(eventId).orElseThrow(() -> new NotFoundException("e"));
+        if (event.getState() == PUBLISHED) throw new ConflictException("event state is PUBLISHED!");
         return eventMapper.toEventFullDto(event);
     }
 
@@ -240,20 +238,18 @@ public class EventService {
             String ip
     ) {
         List<Event> events;
-        if (rangeStart == null && rangeEnd == null) {
-            rangeStart = LocalDateTime.now();
-            rangeEnd = rangeStart.plusYears(10);
-        }
-        if (rangeEnd.isBefore(rangeStart)) {
-            throw new BadRequestException("");
-        }
+        rangeStart = rangeStart != null ? rangeStart : LocalDateTime.now();
+        rangeEnd = rangeEnd != null ? rangeEnd : rangeStart.plusYears(1);
+
+        if (rangeEnd.isBefore(rangeStart))
+            throw new BadRequestException("end is before start!");
+
         if (text != null && paid != null && sort != null && categories != null) {
             events = eventRepository.findAllByAnnotationContainingIgnoreCaseOrDescriptionContainingIgnoreCaseAndCategory_IdInAndPaidIsAndEventDateBeforeAndEventDateAfter(
-                            text, text, categories, paid, rangeEnd, rangeStart, PageRequest.of(from / size, size))
-                    .getContent();
+                            text, text, categories, paid, rangeEnd, rangeStart, PageRequest.of(from, size)).getContent();
         } else {
             events = eventRepository.findAllByEventDateBeforeAndEventDateAfter(rangeEnd, rangeStart,
-                    PageRequest.of(from / size, size)).getContent();
+                    PageRequest.of(from, size)).getContent();
         }
         HitDto endpointHitDto = HitDto.builder().app("ewm-main-service").uri("/events")
                 .timestamp(LocalDateTime.now()).ip(ip).build();

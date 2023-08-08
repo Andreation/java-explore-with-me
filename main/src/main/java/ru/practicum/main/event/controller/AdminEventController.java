@@ -40,8 +40,8 @@ public class AdminEventController {
     }
 
     @PatchMapping("/{id}")
-    public EventDto changeEvent(
+    public EventDto patchEvent(
             @PathVariable Integer id, @Valid @RequestBody(required = false) UpdateEventAdminRequest updateEventAdminRequest) {
-        return eventService.changeEvent(id, updateEventAdminRequest);
+        return eventService.patchEvent(id, updateEventAdminRequest);
     }
 }

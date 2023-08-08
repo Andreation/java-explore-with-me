@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Set;
 
 public interface UserRepository extends JpaRepository<User, Integer> {
-    @Query("select a from User a where ?1 is null or a.id in ?1")
+    @Query("SELECT a FROM User a WHERE ?1 IS null OR a.id IN ?1")
     List<User> findByIdIn(Set<Integer> ids, Pageable pageable);
 
 }
