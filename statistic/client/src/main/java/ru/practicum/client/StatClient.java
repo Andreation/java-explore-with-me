@@ -16,6 +16,7 @@ public class StatClient {
     private final RestTemplate restTemplate;
 
     private final String url;
+
     public StatClient(@Value("${statistic.url}") String url) {
         this.url = url;
         this.restTemplate = new RestTemplateBuilder()
