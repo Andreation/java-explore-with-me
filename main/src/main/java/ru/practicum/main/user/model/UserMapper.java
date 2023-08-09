@@ -17,6 +17,14 @@ public final class UserMapper {
         );
     }
 
+    public static User userFromDto(UserDto user) {
+        return new User(
+                user.getId(),
+                user.getName(),
+                user.getEmail()
+        );
+    }
+
     public static User userFromUserCreateRequestDto(InputUserDto inputUserDto) {
         return new User(
                 null,

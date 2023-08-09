@@ -15,7 +15,8 @@ import ru.practicum.main.request.model.RequestMapper;
 import ru.practicum.main.request.model.Status;
 import ru.practicum.main.request.repository.RequestRepository;
 import ru.practicum.main.user.model.User;
-import ru.practicum.main.user.repository.UserRepository;
+import ru.practicum.main.user.model.UserMapper;
+import ru.practicum.main.user.service.UserService;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
@@ -31,12 +32,12 @@ import static ru.practicum.main.request.model.Status.CONFIRMED;
 public class RequestService {
 
     RequestRepository requestRepository;
-    UserRepository userRepository;
     EventRepository eventRepository;
+    UserService userService;
     EventService eventService;
 
     public List<RequestDtoEvent> getRequests(Integer userId) {
-        if (!userRepository.existsById(userId)) throw new NotFoundException("Пользователь не найден");
+        userService.getUser(userId);
         List<RequestEvent> requests = requestRepository.findAllByRequester_Id(userId);
         return eventService.toParticipationRequestDtos(requests);
     }
@@ -48,12 +49,12 @@ public class RequestService {
         Event event = eventRepository.findById(eventId).orElseThrow(NotFoundException::new);
         if (event.getConfirmedRequests() != null && event.getParticipantLimit() != 0
                 && event.getConfirmedRequests().equals(event.getParticipantLimit())) {
-            throw new ConflictException("");
+            throw new ConflictException("limit or request confirmed");
         }
         if (event.getInitiator().getId().equals(userId) || event.getState() == PENDING || event.getState() == CANCELED) {
-            throw new ConflictException("");
+            throw new ConflictException("event state = PENDING, CANCELED or initiator is user ");
         }
-        User requester = userRepository.findById(userId).orElseThrow(NotFoundException::new);
+        User requester = UserMapper.userFromDto(userService.getUser(userId));
         RequestEvent requestEvent = RequestEvent.builder()
                 .created(LocalDateTime.now().truncatedTo(ChronoUnit.MILLIS)).requester(requester).event(event).build();
         if (event.getParticipantLimit() == 0 || !event.getRequestModeration()) {

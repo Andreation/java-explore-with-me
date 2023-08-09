@@ -32,6 +32,11 @@ public class UserService {
                 .collect(Collectors.toList());
     }
 
+    public UserDto getUser(Integer id) {
+        return UserMapper.userToDto(userRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("not found user with id = " + id)));
+    }
+
     public UserDto postUser(InputUserDto inputUserDto) {
         return UserMapper.userToDto(userRepository.save(UserMapper.userFromUserCreateRequestDto(inputUserDto)));
     }
