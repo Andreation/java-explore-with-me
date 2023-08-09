@@ -276,4 +276,8 @@ public class EventService {
     public List<Event> findAllByIdIn(List<Integer> events) {
         return eventRepository.findAllByIdIn(events);
     }
+
+    public Event findById(Integer id){
+        return eventRepository.findById(id).orElseThrow(() -> new NotFoundException("not found event with id = " + id));
+    }
 }
