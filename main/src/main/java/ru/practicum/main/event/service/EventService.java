@@ -22,9 +22,10 @@ import ru.practicum.main.request.model.RequestMapper;
 import ru.practicum.main.request.model.Status;
 import ru.practicum.main.request.repository.RequestRepository;
 import ru.practicum.main.user.model.User;
-import ru.practicum.main.user.repository.UserRepository;
 import ru.practicum.client.StatClient;
 import ru.practicum.dto.HitDto;
+import ru.practicum.main.user.model.UserMapper;
+import ru.practicum.main.user.service.UserService;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
@@ -45,10 +46,10 @@ import static ru.practicum.main.request.model.Status.REJECTED;
 public class EventService {
 
     EventRepository eventRepository;
-    UserRepository userRepository;
-    RequestRepository requestRepository;
-    EventMapper eventMapper;
     CategoryRepository categoryRepository;
+    RequestRepository requestRepository;
+    UserService userService;
+    EventMapper eventMapper;
     StatClient statsClient;
 
     public List<EventShortDto> getEvents(Integer userId, Integer from, Integer size) {
@@ -61,7 +62,7 @@ public class EventService {
         if (LocalDateTime.now().plusHours(1).isAfter(createEventDto.getEventDate())) {
             throw new ForbiddenException("date error");
         }
-        User user = userRepository.findById(userId).orElseThrow(NotFoundException::new);
+        User user = UserMapper.userFromDto(userService.getUser(userId));
         Event toSave = eventMapper.toEvent(createEventDto);
         if (createEventDto.getCategory() != null) {
             Category category = categoryRepository.findById(createEventDto.getCategory())
