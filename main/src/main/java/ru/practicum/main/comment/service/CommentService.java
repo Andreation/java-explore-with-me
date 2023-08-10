@@ -50,7 +50,7 @@ public class CommentService  {
     public CommentDto updateComment(Integer userId, Integer commentId, InputCommentDto inputCommentDto) {
         Comment comment = commentRepository.findById(commentId)
                 .orElseThrow(() -> new ConflictException("not found comment with id = " + commentId));
-        if (comment.getCommentator().getId() != userId)
+        if (!Objects.equals(comment.getCommentator().getId(), userId))
             throw  new ConflictException("you can't update someone else's comment!");
         
         comment.setText(inputCommentDto.getText());
