@@ -9,9 +9,9 @@ import ru.practicum.main.comment.mapper.CommentMapper;
 import ru.practicum.main.comment.model.Comment;
 import ru.practicum.main.comment.repository.CommentRepository;
 import ru.practicum.main.event.model.Event;
+import ru.practicum.main.event.model.State;
 import ru.practicum.main.event.service.EventService;
 import ru.practicum.main.exception.ConflictException;
-import ru.practicum.main.request.model.Status;
 import ru.practicum.main.request.service.RequestService;
 import ru.practicum.main.user.model.User;
 import ru.practicum.main.user.model.UserMapper;
@@ -39,10 +39,8 @@ public class CommentService  {
     public CommentDto createComment(Integer eventId, Integer userId, InputCommentDto inputCommentDto) {
         User user = UserMapper.userFromDto(userService.getUser(userId));
         Event event = eventService.findById(eventId);
-        requestService.getRequests(userId).stream()
-                .filter(a -> Objects.equals(a.getEvent(), eventId))
-                .filter(a -> a.getStatus() == Status.CONFIRMED).findAny()
-                .orElseThrow(() -> new ConflictException("you were not part of the event!"));
+        if (event.getState() != State.PUBLISHED)
+            throw new ConflictException("event dont PUBLISHED!");
 
         return CommentMapper.commentToDto(
                 commentRepository.save(CommentMapper.commentFromCreateDto(inputCommentDto, user, event)));
@@ -64,7 +62,7 @@ public class CommentService  {
     public void deleteCommentByUser(Integer commentId, Integer userId) {
         Comment comment = commentRepository.findById(commentId)
                 .orElseThrow(() -> new ConflictException("not found comment with id = " + commentId));
-        if (comment.getCommentator().getId() != userId)
+        if (!Objects.equals(comment.getCommentator().getId(), userId))
             throw  new ConflictException("you can't delete someone else's comment!");
         
         commentRepository.delete(comment);

@@ -75,13 +75,13 @@ public class UserEventController {
         return commentService.createComment(eventId, userId, commentInputDto);
     }
 
-    @PatchMapping("/comments/{commentId}")
+    @PatchMapping("/{eventId}/comments/{commentId}")
     public CommentDto updateComment(@PathVariable Integer userId, @PathVariable Integer commentId,
                                     @RequestBody @Valid InputCommentDto commentInputDto) {
         return commentService.updateComment(userId, commentId, commentInputDto);
     }
 
-    @DeleteMapping("/comments/{commentId}")
+    @DeleteMapping("/{eventId}/comments/{commentId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteComment(@PathVariable Integer commentId, @PathVariable Integer userId) {
         commentService.deleteCommentByUser(commentId, userId);
