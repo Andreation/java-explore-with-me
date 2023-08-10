@@ -5,10 +5,13 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import ru.practicum.main.comment.dto.CommentDto;
+import ru.practicum.main.comment.dto.InputCommentDto;
 import ru.practicum.main.event.dto.*;
 import ru.practicum.main.event.dto.CreateEventDto;
 import ru.practicum.main.event.service.EventService;
 import ru.practicum.main.request.dto.RequestDtoEvent;
+import ru.practicum.main.comment.service.CommentService;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
@@ -22,6 +25,7 @@ import java.util.List;
 public class UserEventController {
 
     EventService eventService;
+    CommentService commentService;
 
     @GetMapping("{eventId}")
     public EventDto getEvent(@PathVariable Integer userId, @PathVariable Integer eventId) {
@@ -62,5 +66,24 @@ public class UserEventController {
             @PathVariable Integer eventId,
             @RequestBody EventRequestStatusUpdateRequest eventRequestStatusUpdateRequest) {
         return eventService.changeEventRequests(userId, eventId, eventRequestStatusUpdateRequest);
+    }
+
+    @PostMapping("/{eventId}/comments")
+    @ResponseStatus(HttpStatus.CREATED)
+    public CommentDto createComment(@PathVariable Integer eventId, @PathVariable Integer userId,
+                                    @RequestBody @Valid InputCommentDto commentInputDto) {
+        return commentService.createComment(eventId, userId, commentInputDto);
+    }
+
+    @PatchMapping("/{eventId}/comments/{commentId}")
+    public CommentDto updateComment(@PathVariable Integer userId, @PathVariable Integer commentId,
+                                    @RequestBody @Valid InputCommentDto commentInputDto) {
+        return commentService.updateComment(userId, commentId, commentInputDto);
+    }
+
+    @DeleteMapping("/{eventId}/comments/{commentId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteComment(@PathVariable Integer commentId, @PathVariable Integer userId) {
+        commentService.deleteCommentByUser(commentId, userId);
     }
 }

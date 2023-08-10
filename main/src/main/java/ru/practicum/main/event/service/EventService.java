@@ -7,6 +7,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import ru.practicum.main.category.model.Category;
 import ru.practicum.main.category.repository.CategoryRepository;
+import ru.practicum.main.comment.mapper.CommentMapper;
+import ru.practicum.main.comment.repository.CommentRepository;
 import ru.practicum.main.event.dto.*;
 import ru.practicum.main.event.dto.EventRequestStatusUpdateRequest;
 import ru.practicum.main.event.dto.EventRequestStatusUpdateResult;
@@ -48,6 +50,7 @@ public class EventService {
     EventRepository eventRepository;
     CategoryRepository categoryRepository;
     RequestRepository requestRepository;
+    CommentRepository commentRepository;
     UserService userService;
     EventMapper eventMapper;
     StatClient statsClient;
@@ -81,8 +84,10 @@ public class EventService {
     }
 
     public EventDto getEvent(Integer userId, Integer eventId) {
-        Event event = eventRepository.findByIdAndInitiator_Id(eventId, userId).orElseThrow(NotFoundException::new);
-        return eventMapper.toEventFullDto(event);
+        EventDto event = eventMapper.toEventFullDto(eventRepository.findByIdAndInitiator_Id(eventId, userId)
+                .orElseThrow(NotFoundException::new));
+        event.setComments(CommentMapper.commentToDto(commentRepository.findAllByEventId(eventId)));
+        return event;
     }
 
     public EventDto changeEvent(Integer userId, Integer eventId, UpdateEventUserRequest updateEventUserRequest) {
@@ -262,10 +267,14 @@ public class EventService {
         Event event = eventRepository.findByIdAndStateIn(eventId, List.of(PUBLISHED)).orElseThrow(NotFoundException::new);
         HitDto endpointHitDto = HitDto.builder().app("ewm-main-service").uri("/events/" + eventId)
                 .timestamp(LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS)).ip(ip).build();
-        if (event.getViews() == null) event.setViews(1L);
-        else event.setViews(event.getViews() + 1);
+        if (event.getViews() == null)
+            event.setViews(1L);
+        else
+            event.setViews(event.getViews() + 1);
         statsClient.addHit(endpointHitDto);
-        return eventMapper.toEventFullDto(event);
+        EventDto eventDto = eventMapper.toEventFullDto(event);
+        eventDto.setComments(CommentMapper.commentToDto(commentRepository.findAllByEventId(eventId)));
+        return eventDto;
     }
 
     public  EventDto findFirstByCategoryId(Integer catId) {
